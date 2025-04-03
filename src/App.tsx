@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
-import { generateQuestion } from './lib/ai';
+import { useState } from 'react';
+import { generateQuestion } from '@/lib/ai';
 import CodeEditor from '@/components/CodeEditor';
 
 export default function App() {
   const [currentQuestion, setQuestion] = useState("");
   const [code, setCode] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const handleGenerateQuestion = async () => {
-    const question = await generateQuestion("React");
-    setQuestion(question);
+    try {
+      setIsGenerating(true);
+      const question = await generateQuestion("React");
+      setQuestion(question);
+    } catch (error) {
+      console.error("Question generation failed:", error);
+      alert("Failed to generate question. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -16,8 +25,11 @@ export default function App() {
       <h1>AI Technical Interview System</h1>
       
       <div className="interview-panel">
-        <button onClick={handleGenerateQuestion}>
-          Generate Question
+        <button 
+          onClick={handleGenerateQuestion}
+          disabled={isGenerating}
+        >
+          {isGenerating ? 'Generating...' : 'Generate Question'}
         </button>
         
         {currentQuestion && (
@@ -28,7 +40,10 @@ export default function App() {
         )}
 
         <div className="code-editor">
-          <CodeEditor value={code} onChange={setCode} />
+          <CodeEditor 
+            value={code} 
+            onChange={setCode}
+          />
         </div>
       </div>
     </div>
