@@ -14,6 +14,10 @@ export default defineConfig({
       input: 'index.html',
     },
   },
+  preview: {
+    port: 4173,
+    strictPort: true, // Prevent automatic port fallback
+  }
 });
 
 

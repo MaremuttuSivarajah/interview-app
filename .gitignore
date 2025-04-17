@@ -28,4 +28,8 @@ dist-ssr
 # Environment files
 .env
 .env.*
+src/lib/ai.js
+src/lib/ai.d.ts
+src/lib/ai.d.ts.map
+
 
